@@ -114,9 +114,13 @@ export default function App() {
         <p className="matches">Server search: {serverMatches.length} match(es) for “{query}”</p>
       )}
       <ul className="rows">
-        {shown.map((x, index) => (
+        {/* {shown.map((x, index) => (
           <ApplicationRow key={index} application={x}
             onToggle={() => toggleFollowedUp(x)} onRemove={() => removeApplication(x)} />
+        ))} */}
+        {shown.map((x) => (
+          <ApplicationRow key={x.id} application={x}
+          onToggle={() => toggleFollowedUp(x)} onRemove={() => removeApplication(x)} />
         ))}
       </ul>
       <div className="pager">

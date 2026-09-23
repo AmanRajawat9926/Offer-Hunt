@@ -72,27 +72,7 @@ export default function App() {
     setApplications(applications.filter((it) => it.id !== x.id));
   }
 
-  function NewApplicationForm() {
-    function submit(e) {
-      e.preventDefault();
-      if (draftText.trim() === '' || Number(draftNum) <= 0) return;
-      setApplications([
-        { id: Date.now(), company: draftText.trim(), round: 'Applied', expectedLpa: Number(draftNum), followedUp: false },
-        ...applications,
-      ]);
-      setDraftText('');
-      setDraftNum('');
-    }
-    return (
-      <form className="new-entry" onSubmit={submit}>
-        <input placeholder="Company name" value={draftText}
-          onChange={(e) => setDraftText(e.target.value)} />
-        <input placeholder="Expected CTC (LPA)" type="number" value={draftNum}
-          onChange={(e) => setDraftNum(e.target.value)} />
-        <button type="submit">Add application</button>
-      </form>
-    );
-  }
+  
 
   return (
     <div className="app">
@@ -131,7 +111,34 @@ export default function App() {
     </div>
   );
 }
+function NewApplicationForm({ draftText, setDraftText, draftNum, setDraftNum, setApplications, applications }) {
+    function submit(e) {
+      e.preventDefault();
+      if (draftText.trim() === '' || Number(draftNum) <= 0) return;
+      setApplications([
+        { id: Date.now(), company: draftText.trim(), round: 'Applied', expectedLpa: Number(draftNum), followedUp: false },
+        ...applications,
+      ]);
+      setDraftText('');
+      setDraftNum('');
+    }
 
+    function handleKeyDown(e) {
+    if (e.key === 'Escape') {
+      setDraftText('');
+      setDraftNum('');
+    }
+  }
+    return (
+      <form className="new-entry" onSubmit={submit}>
+        <input placeholder="Company name" value={draftText}
+          onChange={(e) => setDraftText(e.target.value)} />
+        <input placeholder="Expected CTC (LPA)" type="number" value={draftNum}
+          onChange={(e) => setDraftNum(e.target.value)} />
+        <button type="submit">Add application</button>
+      </form>
+    );
+  }
 function ApplicationRow({ application, onToggle, onRemove }) {
   const [note, setNote] = useState('');
   return (

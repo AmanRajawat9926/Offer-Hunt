@@ -32,3 +32,14 @@
 **Why Fix is Correct**: I changed the dependency from the activeView object to the actual values [query, roundFilter]. Now the effect runs only when the search query or round filter changes.
 
 **Verification**: I went to page 2 and then changed the notes/timer without changing the search or filter. The page stayed on page 2, so the pagination was working correctly.
+
+
+## Defect 4: Inline Component Declaration for NewApplicationForm
+
+* **Symptom**: When I typed in the "Company name" or "Expected CTC" field, the input was losing focus after every keypress.
+
+* **Root Cause**: `NewApplicationForm` was declared inside the `App` component. Whenever the state changed, `App` re-rendered and a new `NewApplicationForm` component was created. React treated it as a different component, so the old input was removed and a new one was created, which caused the focus to be lost.
+
+* **Why Fix is Correct**: I moved `NewApplicationForm` outside the `App` component. This keeps the component reference stable when `App` re-renders, so the input is not recreated on every keypress.
+
+* **Verification**: I typed complete company names and CTC values in both fields and confirmed that the input focus stayed active while typing.

@@ -42,11 +42,15 @@ export default function App() {
   return () => clearInterval(tick);
 }, [])
 
-  const activeView = { search: query, round: roundFilter };
+  // const activeView = { search: query, round: roundFilter };
+
+  // useEffect(() => {
+  //   setPage(1); // back to page 1 whenever the view changes
+  // }, [activeView]);
 
   useEffect(() => {
-    setPage(1); // back to page 1 whenever the view changes
-  }, [activeView]);
+    setPage(1);
+  }, [query, roundFilter]);
 
   useEffect(() => {
     if (query.trim() === '') { setServerMatches(null); return; }

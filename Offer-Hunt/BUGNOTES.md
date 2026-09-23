@@ -11,3 +11,14 @@
 ## setSecondsOpen((prev) => prev + 1)
 
 - **Verification**: Ran `npm run dev`, let the application sit open for 60+ seconds, and verified that the timer continuously and correctly increments lineally (`1s`, `2s`, `3s`, ...).
+
+
+## Defect 3: Object Reference Dependency in useEffect
+
+**Symptom**: The pagination was going back to page 1 even when I changed other things that were not related to search or filters.
+
+**Root Cause**: activeView was created as an object inside the App component like { search: query, round: roundFilter }. Since a new object is created on every render, its reference also changes every time. Because useEffect was depending on this object, the effect was running again on every render and resetting the page to 1.
+
+**Why Fix is Correct**: I changed the dependency from the activeView object to the actual values [query, roundFilter]. Now the effect runs only when the search query or round filter changes.
+
+**Verification**: I went to page 2 and then changed the notes/timer without changing the search or filter. The page stayed on page 2, so the pagination was working correctly.

@@ -52,10 +52,29 @@ export default function App() {
     setPage(1);
   }, [query, roundFilter]);
 
+  // useEffect(() => {
+  //   if (query.trim() === '') { setServerMatches(null); return; }
+  //   lookupApplications(query, applications).then((found) => setServerMatches(found));
+  // }, [query, applications]);
+
   useEffect(() => {
-    if (query.trim() === '') { setServerMatches(null); return; }
-    lookupApplications(query, applications).then((found) => setServerMatches(found));
-  }, [query, applications]);
+  if (query.trim() === '') {
+    setServerMatches(null);
+    return;
+  }
+
+  let active = true;
+
+  lookupApplications(query, applications).then((found) => {
+    if (active) {
+      setServerMatches(found);
+    }
+  });
+
+  return () => {
+    active = false;
+  };
+}, [query, applications]);
 
   const visible = applications
     .filter((x) => x.company.toLowerCase().includes(query.toLowerCase()))
@@ -86,7 +105,14 @@ export default function App() {
     <div className="app">
       <h1>Offer Hunt</h1>
       <p className="timer">Time on page: {secondsOpen}s</p>
-      <NewApplicationForm />
+      <NewApplicationForm
+    draftText={draftText}
+    setDraftText={setDraftText}
+    draftNum={draftNum}
+    setDraftNum={setDraftNum}
+    applications={applications}
+    setApplications={setApplications}
+  />
       <div className="filters">
         <input placeholder="Search applications…" value={query}
           onChange={(e) => setQuery(e.target.value)} />

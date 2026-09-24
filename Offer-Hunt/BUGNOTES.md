@@ -54,3 +54,14 @@
 * **Why Fix is Correct**: I changed the update to use `map()` and created a new object for the updated application using `{ ...item, followedUp: !item.followedUp }`. This keeps the original state unchanged and gives React a new reference to detect the update.
 
 * **Verification**: I clicked the "Followed up" checkbox on different rows and confirmed that each checkbox updated correctly without affecting the other rows.
+
+
+## Defect 6: Search Query Race Condition
+
+* **Symptom**: When I typed quickly in the search box, the results sometimes showed matches for an older search instead of the latest search.
+
+* **Root Cause**: `lookupApplications` has different response times for different search terms. When I typed quickly, an older search request could finish after the newer request and update the results with outdated data.
+
+* **Why Fix is Correct**: I added an `active` flag inside `useEffect` and used a cleanup function. When the search query changes, the previous request is marked as inactive. So, when an older request finishes, it cannot update `setServerMatches`.
+
+* **Verification**: I quickly typed "Zoho" in the search box and checked the server search results. The final results consistently matched "Zoho" instead of an older query like "Z" or "Zo".

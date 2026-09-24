@@ -43,3 +43,14 @@
 * **Why Fix is Correct**: I moved `NewApplicationForm` outside the `App` component. This keeps the component reference stable when `App` re-renders, so the input is not recreated on every keypress.
 
 * **Verification**: I typed complete company names and CTC values in both fields and confirmed that the input focus stayed active while typing.
+
+
+## Defect 5: Direct State Mutation in Toggle Handler
+
+* **Symptom**: The "Followed up" checkbox was not updating reliably because the application state was being changed directly.
+
+* **Root Cause**: `toggleFollowedUp` was directly changing `x.followedUp` and then passing the same `applications` array to `setApplications`. Since the original state was being modified instead of creating a new array and object, React might not detect the change properly.
+
+* **Why Fix is Correct**: I changed the update to use `map()` and created a new object for the updated application using `{ ...item, followedUp: !item.followedUp }`. This keeps the original state unchanged and gives React a new reference to detect the update.
+
+* **Verification**: I clicked the "Followed up" checkbox on different rows and confirmed that each checkbox updated correctly without affecting the other rows.

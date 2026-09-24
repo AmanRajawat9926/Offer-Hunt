@@ -63,10 +63,18 @@ export default function App() {
   const pageCount = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
   const shown = visible.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
+  // function toggleFollowedUp(x) {
+  //   x.followedUp = !x.followedUp;
+  //   setApplications(applications);
+  // }
+
   function toggleFollowedUp(x) {
-    x.followedUp = !x.followedUp;
-    setApplications(applications);
-  }
+  setApplications((prev) =>
+    prev.map((item) =>
+      item.id === x.id ? { ...item, followedUp: !item.followedUp } : item
+    )
+  );
+}
 
   function removeApplication(x) {
     setApplications(applications.filter((it) => it.id !== x.id));

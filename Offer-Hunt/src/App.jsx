@@ -84,6 +84,11 @@ export default function App() {
     .filter((x) => roundFilter === 'All' || x.round === roundFilter);
 
   const pageCount = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
+  useEffect(() => {
+    if (page > pageCount) {
+      setPage(pageCount);
+    }
+  }, [page, pageCount]);
   const shown = visible.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   // Defect 5 Fix: Immutable toggle

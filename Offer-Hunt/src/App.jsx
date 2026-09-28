@@ -46,7 +46,7 @@ export default function App() {
   // Requirement 1: Persist applications to localStorage whenever state updates
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(applications));
-  }, [applications]);
+  }, []);
 
   // Defect 1 Fix: Timer updater
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function App() {
     return () => {
       active = false;
     };
-  }, [query, applications]);
+  }, [query]);
 
   const visible = applications
     .filter((x) => x.company.toLowerCase().includes(query.toLowerCase()))
@@ -135,7 +135,7 @@ export default function App() {
 
       {/* Requirement 2: Correct count display under filtering, search & pagination */}
       <p className="showing-count">
-        Showing {shown.length} of {visible.length} applications
+        Showing {shown.length} of {applications.length} applications
       </p>
 
       {serverMatches !== null && (
@@ -215,7 +215,6 @@ function NewApplicationForm({
   function handleKeyDown(e) {
     if (e.key === 'Escape') {
       setDraftText('');
-      setDraftNum('');
     }
   }
 
